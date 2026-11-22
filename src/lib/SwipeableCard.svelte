@@ -3,9 +3,9 @@
 	import CardImage from './CardImage.svelte';
 	import Swiper from './Swiper.svelte';
 	import type { Offset } from './Swiper.svelte';
-	import classnames from './classnames';
+	import classnames from './utils/classnames';
 
-	interface PackCardProps extends ComponentProps<typeof CardImage> {
+	interface SwipeableCardProps extends ComponentProps<typeof CardImage> {
 		class?: string;
 		swiped?: boolean;
 		disabled?: boolean;
@@ -18,7 +18,7 @@
 	const HIDDEN_STYLE =
 		'translate-y-[5%] opacity-0 [--pack-card-duration:300ms] [--pack-card-opacity-delay:150ms] transition-[transform,translate,rotate,opacity] duration-[var(--pack-card-duration),var(--pack-card-duration),var(--pack-card-duration),calc(var(--pack-card-duration)-var(--pack-card-opacity-delay))] delay-[0ms,0ms,0ms,var(--pack-card-opacity-delay)] ease-linear';
 
-	let { class: classProp, swiped, disabled, onswipe, ...props }: PackCardProps = $props();
+	let { class: classProp, swiped, disabled, onswipe, ...props }: SwipeableCardProps = $props();
 
 	let offset = $state(0);
 	let swipedDirection = $state(0);

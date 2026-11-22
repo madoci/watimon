@@ -1,26 +1,24 @@
 <script lang="ts">
-	import PackCard from '#lib/PackCard.svelte';
+	import CardPile from '#lib/CardPile.svelte';
+	import CardPack from '#lib/CardPack.svelte';
 
-	const cards = ['A', 'B', 'C', 'D'];
+	const cards = [1, 2, 3, 4, 5];
 
-	let index = $state(0);
-
-	let reverseIndex = $derived(cards.length - 1 - index);
-	let sortedCards = $derived([...cards].reverse());
+	let currentCard = $state<number | undefined>(cards[0]);
+	let packShown = $state(false);
 </script>
 
-<h1>Watimon</h1>
-<button onclick={() => (index = 0)}>Reset</button>
-<div class="flex w-full justify-center">
-	<div class="relative h-[400px] w-[250px] select-none">
-		{#each sortedCards as card, i (card)}
-			<PackCard
-				class="absolute top-0 left-0 w-full"
-				text={card}
-				back={i < reverseIndex}
-				swiped={i > reverseIndex}
-				onswipe={() => index++}
-			/>
-		{/each}
+<div class="h-full w-full">
+	<div class="m-auto h-full w-full max-w-md">
+		{#if packShown}
+			<CardPack onopened={() => (packShown = false)} />
+		{:else}
+			<button onclick={() => (packShown = true)}>Open pack</button>
+		{/if}
 	</div>
 </div>
+{#if false}
+	<div class="flex w-full justify-center">
+		<CardPile {cards} {currentCard} onswipe={(card) => (currentCard = card)} />
+	</div>
+{/if}

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import cardBack from './assets/card-back.png';
+	import cardBackImage from './assets/card-back.png';
 
 	const CARD_SIZE_RATIO = 1024 / 1418;
 
 	interface CardImageProps {
+		card: number;
 		class?: string;
-		text: string;
 		back?: boolean;
 	}
 
@@ -22,11 +22,11 @@
 			: ''}"
 	>
 		<div class="absolute h-full w-full backface-hidden">
-			<div class="h-full w-full rounded-xl bg-amber-50">{props.text}</div>
+			<div class="h-full w-full rounded-xl bg-amber-50">{props.card}</div>
 		</div>
 		<img
 			alt="Card back"
-			src={cardBack}
+			src={cardBackImage}
 			class="absolute h-full w-full rotate-y-180 backface-hidden"
 		/>
 	</div>
