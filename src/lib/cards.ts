@@ -1,9 +1,11 @@
 type Enum<T extends object> = T extends { [K in keyof T]: infer U } ? U : never;
 
-interface CardInfo {
+export type Rarity = Enum<typeof RARITY>;
+
+export interface CardInfo {
 	id: number;
 	//image: string;
-	rarity: Enum<typeof RARITY>;
+	rarity: Rarity;
 }
 
 export const RARITY = {
@@ -35,7 +37,15 @@ const CARD_LIBRARY: readonly CardInfo[] = [
 	},
 	{
 		id: 6,
-		rarity: RARITY.COMMON,
+		rarity: RARITY.RARE,
+	},
+	{
+		id: 7,
+		rarity: RARITY.RARE,
+	},
+	{
+		id: 8,
+		rarity: RARITY.MYTHIC,
 	},
 ];
 
@@ -65,13 +75,10 @@ const MAX_ID = CARD_LIBRARY.reduce((max, card) => {
 	return Math.max(card.id, max);
 }, 0);
 
-const INDEXED_CARDS = CARD_LIBRARY.reduce(
-	(res, card) => {
-		res[card.id] = card;
-		return res;
-	},
-	new Array<CardInfo | undefined>(MAX_ID - 1).fill(undefined),
-);
+const INDEXED_CARDS = CARD_LIBRARY.reduce((res, card) => {
+	res[card.id] = card;
+	return res;
+}, new Array<CardInfo | undefined>(MAX_ID).fill(undefined));
 
 export function getCards(): readonly (CardInfo | undefined)[] {
 	return INDEXED_CARDS;

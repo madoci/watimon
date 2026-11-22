@@ -119,3 +119,21 @@ export function getCollection() {
 export function getLastPack() {
 	return getData().lastPack;
 }
+
+export function addPackToCollection(cardIds: number[]) {
+	const collection = [...getCollection()];
+	for (const cardId of cardIds) {
+		collection[cardId] = true;
+	}
+	setData({
+		collection,
+		lastPack: {
+			datetime: new Date().toString(),
+			cards: cardIds,
+		},
+	});
+}
+
+export function clearStorageData() {
+	setData(createData());
+}
