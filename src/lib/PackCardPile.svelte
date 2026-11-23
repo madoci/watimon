@@ -19,12 +19,12 @@
             // Wait for last card animation to finish before calling onemptied
             setTimeout(() => {
                 onemptied?.();
-            }, 1000);
+            }, 500);
         }
     }
 </script>
 
-<div class="h-full w-full p-2">
+<div class="h-full w-90/100">
     <CardPile
         {cards}
         currentCard={currentCard === 'init' ? cards[0] : currentCard}

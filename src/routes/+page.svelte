@@ -2,6 +2,7 @@
     import OpenPackButton from '#lib/OpenPackButton.svelte';
     import Pack from '#lib/Pack.svelte';
     import { clearStorageData, getCollection } from '#lib/storage-data.ts';
+    import { fade } from 'svelte/transition';
 
     let packShown = $state(false);
 </script>
@@ -12,9 +13,9 @@
             <button onclick={() => console.log(getCollection())}>Collection</button>
             <button onclick={() => clearStorageData()}>Reset</button>
         </div>
-        <div class="relative h-full w-full">
+        <div class="relative flex h-full w-full justify-center">
             {#if !packShown}
-                <div class="absolute top-1/2 left-1/2 -translate-1/2">
+                <div transition:fade class="absolute top-1/2 left-1/2 -translate-1/2">
                     <OpenPackButton
                         renderOpenable={() => 'Ouvrir un booster'}
                         renderUnopenable={(duration) => `Nouveau booster dans ${duration}`}

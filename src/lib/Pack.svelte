@@ -27,7 +27,7 @@
     }
 </script>
 
-<div class="relative h-full w-full p-8 perspective-distant">
+<div class="relative h-full w-85/100 perspective-distant">
     {#if !isPackOpened}
         <div
             // Keep pack visible during out transition
@@ -37,7 +37,7 @@
             <PackSelector onopen={handleOpen} />
         </div>
     {:else}
-        <div class="flex h-full w-full">
+        <div class="flex h-full w-full justify-center">
             <PackCardPile {cards} {onemptied} />
         </div>
     {/if}
