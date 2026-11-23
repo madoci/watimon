@@ -120,6 +120,12 @@ export function getLastPack() {
     return getData().lastPack;
 }
 
+export function getLastPackTimestamp() {
+    const lastPack = getData().lastPack;
+    const lastTimestamp = new Date(lastPack?.datetime ?? '').getTime();
+    return Number.isNaN(lastTimestamp) ? -Infinity : lastTimestamp;
+}
+
 export function addPackToCollection(cardIds: number[]) {
     const collection = [...getCollection()];
     for (const cardId of cardIds) {

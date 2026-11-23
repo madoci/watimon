@@ -17,7 +17,12 @@
     function handleOpen() {
         if (!isPackOpened) {
             isPackOpened = true;
-            cards = openPack();
+            try {
+                cards = openPack();
+            } catch {
+                // If an error occurs while attempting to open a pack, end opening
+                onemptied?.();
+            }
         }
     }
 </script>

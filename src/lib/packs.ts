@@ -1,7 +1,15 @@
 import { getCards, RARITY, type CardInfo, type Rarity } from './cards';
-import { addPackToCollection, getCollection } from './storage-data';
+import {
+    addPackToCollection,
+    getCollection,
+    getLastPack,
+    getLastPackTimestamp,
+} from './storage-data';
 
 type CardDistribution = { [K in Rarity]?: number };
+
+//const PACK_OPENING_DELAY = 24 * 60 * 60;
+const PACK_OPENING_DELAY = 60;
 
 const PACK_CARD_DISTRIBUTION: Record<'base', CardDistribution[]> = {
     base: [
@@ -11,9 +19,38 @@ const PACK_CARD_DISTRIBUTION: Record<'base', CardDistribution[]> = {
     ],
 };
 
-export function openPack() {
-    const collection = getCollection();
+export function getRemainingTime(timestamp: number) {
+    const canOpen = canOpenPack();
+    const lastPackTimestamp = getLastPackTimestamp();
+    return canOpen
+        ? -1
+        : Math.ceil(Math.max(0, PACK_OPENING_DELAY - (timestamp - lastPackTimestamp) / 1000));
+}
+
+export function canOpenPack() {
+    const lastTimestamp = getLastPackTimestamp();
+    if (lastTimestamp < 0) {
+        return 1;
+    }
+    const timeSinceLastPack = (Date.now() - lastTimestamp) / 1000;
+    return Math.floor(timeSinceLastPack / PACK_OPENING_DELAY);
+}
+
+export function openPack(): CardInfo[] {
     const cards = getCards();
+
+    if (!canOpenPack()) {
+        // If a new pack cannot be opened, we return the last pack
+        const lastPack = getLastPack();
+        if (!lastPack) {
+            throw new Error('Pack could not be retrieved');
+        }
+        return lastPack.cards
+            .map((id) => cards.find((c) => c?.id === id))
+            .filter((c): c is CardInfo => !!c);
+    }
+
+    const collection = getCollection();
     const pools = cards.reduce<{ [K in Rarity]?: CardInfo[] }>((res, card) => {
         if (card && !collection[card.id]) {
             if (!res[card.rarity]) {
