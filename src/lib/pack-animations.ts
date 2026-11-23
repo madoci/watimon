@@ -51,9 +51,11 @@ export function slideDown(node: HTMLElement) {
     };
 }
 
-export function thrown(node: HTMLElement) {
+export function thrown(node: HTMLElement, params?: { direction: 'left' | 'right' }) {
     const dettachedDelay = 0.25;
     const opacityDelay = 0.8;
+    const direction = params?.direction ?? 'right';
+    const directionSign = params?.direction === 'left' ? -1 : 1;
     return {
         duration: 600,
         css: (t: number, u: number) => {
@@ -67,7 +69,30 @@ export function thrown(node: HTMLElement) {
                 u < opacityDelay
                     ? 1
                     : 1 - sinusoidal((u - opacityDelay) / (1 - opacityDelay) / 2, 1, -1, 1);
-            return `transform: scale(${scale}) translateX(${translationX * 50}%) translateY(${translationY * 1600}%) rotateZ(${rotationZ * 10}deg) rotateY(${rotationY * 2}deg); opacity: ${opacity};`;
+            return `transform-origin: bottom ${direction}; transform: scale(${scale}) translateX(${directionSign * translationX * 50}%) translateY(${translationY * 1600}%) rotateZ(${directionSign * rotationZ * 10}deg) rotateY(${directionSign * rotationY * 2}deg); opacity: ${opacity};`;
         },
+    };
+}
+
+export function slideCardUp(node: HTMLElement, params: { index: number; count: number }) {
+    const delay = 150;
+    const maxTotalDelay = 500;
+    return {
+        duration: 600,
+        delay: params.index * Math.min(delay, maxTotalDelay / (params.count - 1)),
+        css: (t: number) => `transform: translateY(${(1 - t) * 200}%);`,
+    };
+}
+
+export function ghost(node: HTMLElement, params?: { duration?: number }) {
+    const duration = params?.duration ?? 500;
+    const top = node.offsetTop;
+    const left = node.offsetLeft;
+    const height = node.offsetHeight;
+    const width = node.offsetWidth;
+    return {
+        duration,
+        css: () =>
+            `position: absolute; top: ${top}px; left: ${left}px; height: ${height}px; width: ${width}px;`,
     };
 }

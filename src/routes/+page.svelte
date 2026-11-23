@@ -1,24 +1,21 @@
 <script lang="ts">
-    import CardPile from '#lib/CardPile.svelte';
     import Pack from '#lib/Pack.svelte';
+    import { clearStorageData, getCollection } from '#lib/storage-data.ts';
 
-    const cards = [1, 2, 3, 4, 5];
-
-    let currentCard = $state<number | undefined>(cards[0]);
     let packShown = $state(false);
 </script>
 
 <div class="h-full w-full">
-    <div class="m-auto h-full w-full max-w-md">
+    <div class="m-auto flex h-full w-full max-w-md flex-col">
+        <button onclick={() => (packShown = !packShown)}>
+            {packShown ? 'Return' : 'Open pack'}
+        </button>
+        <button onclick={() => console.log(getCollection())}>Collection</button>
+        <button onclick={() => clearStorageData()}>Reset</button>
         {#if packShown}
-            <Pack onopened={() => (packShown = false)} />
-        {:else}
-            <button onclick={() => (packShown = true)}>Open pack</button>
+            <div class="h-full w-full">
+                <Pack onopened={() => (packShown = false)} />
+            </div>
         {/if}
     </div>
 </div>
-{#if false}
-    <div class="flex w-full justify-center">
-        <CardPile {cards} {currentCard} onswipe={(card) => (currentCard = card)} />
-    </div>
-{/if}

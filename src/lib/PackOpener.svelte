@@ -1,5 +1,9 @@
 <script lang="ts">
-    import Swiper, { type Offset } from './Swiper.svelte';
+    import packImageTop from './assets/pack-top.png';
+    import packImageBottom from './assets/pack-bottom.png';
+    import { slideDown, thrown } from './pack-animations';
+    import { fade } from 'svelte/transition';
+    import PackSlicer from './PackSlicer.svelte';
 
     interface PackOpenerProps {
         onopen?: () => void;
@@ -7,28 +11,23 @@
 
     let { onopen }: PackOpenerProps = $props();
 
-    let offsetWidth = $state<number>(Infinity);
+    let openingDirection = $state(1);
 
-    function handleMove({ x }: Offset) {
-        if (x / offsetWidth > 0.5) {
-            onopen?.();
-        }
-    }
-
-    function handleClick() {
+    function handleOpen(direction: 1 | -1) {
+        openingDirection = direction;
         onopen?.();
     }
 </script>
 
-<div
-    bind:offsetWidth
-    class="relative h-3 w-full -translate-y-1/2 items-center border-y-4 border-solid border-transparent bg-linear-to-r from-blue-500 via-cyan-300 to-blue-500 bg-size-[200%_100%] [border-image:linear-gradient(to_right,#ffffff,#ffffff_75%,#aaaaaa)_1] motion-safe:animate-gradient-pan"
->
-    <Swiper
-        class="absolute top-1/2 left-1/2 h-10 w-[110%] -translate-1/2 rounded-full"
-        onmove={handleMove}
-        onclick={handleClick}
-    >
-        <div></div>
-    </Swiper>
+<div class="perspective-dramatic">
+    <img
+        out:thrown|global={{ direction: openingDirection < 0 ? 'left' : 'right' }}
+        alt="Card pack top"
+        src={packImageTop}
+        class="w-full transform-3d"
+    />
+    <div out:fade|global={{ duration: 200 }} class="h-0 w-full">
+        <PackSlicer onopen={handleOpen} />
+    </div>
+    <img out:slideDown|global alt="Card pack bottom" src={packImageBottom} class="w-full" />
 </div>

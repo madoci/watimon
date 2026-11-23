@@ -1,29 +1,50 @@
 <script lang="ts">
-	import SwipeableCard from './SwipeableCard.svelte';
+    import type { TransitionConfig } from 'svelte/transition';
+    import type { CardInfo } from './cards';
+    import SwipeableCard from './SwipeableCard.svelte';
 
-	interface CardPileProps {
-		cards: number[];
-		currentCard: number | undefined;
-		onswipe?: (nextCard: number | undefined) => void;
-	}
+    export interface CardTransitionParameters {
+        card: CardInfo;
+        index: number;
+        count: number;
+    }
 
-	let { cards, currentCard, onswipe }: CardPileProps = $props();
+    interface CardPileProps {
+        cards: CardInfo[];
+        currentCard: CardInfo | undefined;
+        cardInTransition?: (
+            node: HTMLElement,
+            params: CardTransitionParameters,
+        ) => TransitionConfig;
+        onswipe?: (nextCard: CardInfo | undefined) => void;
+    }
 
-	let reversedCards = $derived([...cards].reverse());
-	let currentIndex = $derived.by(() => {
-		const index = reversedCards.findIndex((c) => c === currentCard);
-		return index === -1 ? index : index;
-	});
+    let { cards, currentCard, cardInTransition, onswipe }: CardPileProps = $props();
+
+    let reversedCards = $derived([...cards].reverse());
+    let currentIndex = $derived.by(() => {
+        const index = reversedCards.findIndex((c) => c?.id === currentCard?.id);
+        return index === -1 ? index : index;
+    });
+
+    function safeCardInTransition(node: HTMLElement, params: CardTransitionParameters) {
+        return cardInTransition?.(node, params) ?? {};
+    }
 </script>
 
-<div class="relative h-[400px] w-[250px] select-none">
-	{#each reversedCards as card, index (card)}
-		<SwipeableCard
-			{card}
-			class="absolute top-0 left-0 w-full"
-			back={index < currentIndex}
-			swiped={index > currentIndex}
-			onswipe={() => onswipe?.(reversedCards[currentIndex - 1])}
-		/>
-	{/each}
+<div class="relative h-full w-full select-none">
+    {#each reversedCards as card, index (card?.id)}
+        <div
+            in:safeCardInTransition|global={{ card, index, count: reversedCards.length }}
+            class="absolute top-1/2 left-0 w-full -translate-y-1/2"
+        >
+            <SwipeableCard
+                {card}
+                class="w-full"
+                back={index < currentIndex}
+                swiped={index > currentIndex}
+                onswipe={() => onswipe?.(reversedCards[currentIndex - 1])}
+            />
+        </div>
+    {/each}
 </div>
