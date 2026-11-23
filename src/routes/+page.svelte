@@ -14,7 +14,7 @@
         <button onclick={() => clearStorageData()}>Reset</button>
         {#if packShown}
             <div class="h-full w-full">
-                <Pack onopened={() => (packShown = false)} />
+                <Pack onemptied={() => (packShown = false)} />
             </div>
         {/if}
     </div>

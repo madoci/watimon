@@ -18,7 +18,7 @@
 <div
     in:whirl|global
     class={classnames(
-        'm-auto aspect-(--pack-size-ratio) w-full transform-3d',
+        'm-auto aspect-(--pack-size-ratio) w-full select-none transform-3d',
         isOpening && 'translate-y-[80%] transition-transform duration-1000',
     )}
     style="--pack-size-ratio: {PACK_SIZE_RATIO};"
@@ -29,7 +29,7 @@
             class="h-full w-full"
             onclick={() => (isOpening = true)}
         >
-            <img alt="Card pack" src={packImage} class="h-full w-full" />
+            <img alt="Card pack" src={packImage} class="h-full w-full" draggable="false" />
         </button>
     {:else}
         <div in:crossfade class="h-full w-full">

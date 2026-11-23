@@ -19,15 +19,22 @@
     }
 </script>
 
-<div class="perspective-dramatic">
+<div class="select-none perspective-dramatic">
     <img
         out:thrown|global={{ direction: openingDirection < 0 ? 'left' : 'right' }}
         alt="Card pack top"
         src={packImageTop}
         class="w-full transform-3d"
+        draggable="false"
     />
     <div out:fade|global={{ duration: 200 }} class="h-0 w-full">
         <PackSlicer onopen={handleOpen} />
     </div>
-    <img out:slideDown|global alt="Card pack bottom" src={packImageBottom} class="w-full" />
+    <img
+        out:slideDown|global
+        alt="Card pack bottom"
+        src={packImageBottom}
+        class="w-full"
+        draggable="false"
+    />
 </div>

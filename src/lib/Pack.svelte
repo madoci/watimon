@@ -5,13 +5,11 @@
     import PackCardPile from './PackCardPile.svelte';
     import PackSelector from './PackSelector.svelte';
 
-    const PACK_SIZE_RATIO = 400 / 731;
-
     interface PackProps {
-        onopened?: () => void;
+        onemptied?: () => void;
     }
 
-    let { onopened }: PackProps = $props();
+    let { onemptied }: PackProps = $props();
 
     let isPackOpened = $state(false);
     let cards = $state<CardInfo[]>([]);
@@ -35,7 +33,7 @@
         </div>
     {:else}
         <div class="flex h-full w-full">
-            <PackCardPile {cards} />
+            <PackCardPile {cards} {onemptied} />
         </div>
     {/if}
 </div>

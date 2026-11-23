@@ -6,18 +6,29 @@
 
     interface PackCardPileProps {
         cards: ComponentProps<typeof CardPile>['cards'];
+        onemptied?: () => void;
     }
 
-    let { cards }: PackCardPileProps = $props();
+    let { cards, onemptied }: PackCardPileProps = $props();
 
-    let currentCard = $state<CardInfo | undefined>(undefined);
+    let currentCard = $state<CardInfo | undefined | 'init'>('init');
+
+    function handleSwipe(card: CardInfo | undefined) {
+        currentCard = card;
+        if (!card) {
+            // Wait for last card animation to finish before calling onemptied
+            setTimeout(() => {
+                onemptied?.();
+            }, 1000);
+        }
+    }
 </script>
 
 <div class="h-full w-full p-2">
     <CardPile
         {cards}
-        currentCard={currentCard ?? cards[0]}
+        currentCard={currentCard === 'init' ? cards[0] : currentCard}
         cardInTransition={slideCardUp}
-        onswipe={(card) => (currentCard = card)}
+        onswipe={handleSwipe}
     />
 </div>
