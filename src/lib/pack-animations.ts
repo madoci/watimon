@@ -24,18 +24,26 @@ export function whirl(node: HTMLElement) {
     };
 }
 
-export function crossfade(node: HTMLElement, params?: { out?: boolean }) {
-    const duration = 500;
-    const overlap = 100;
-    const out = !!params?.out;
-    const outStart = duration / (duration + overlap);
+export function fadeOverlap(
+    node: HTMLElement,
+    params?: { duration?: number; overlap?: number; delay?: number },
+) {
+    const duration = params?.duration ?? 300;
+    const overlap = params?.overlap ?? 100;
+    const delay = params?.delay ?? 0;
+
+    const overlapEnd = overlap / (duration + overlap);
+
+    const style = getComputedStyle(node);
+    const shadowOpacity = style.getPropertyValue('--drop-shadow-opacity') ?? '0%';
 
     return {
-        duration: out ? duration + overlap : duration,
-        css: (t: number, u: number) => {
-            const v = !out ? t : u < outStart ? 1 : 1 - (u - outStart) / (1 - outStart);
-            const o = Math.max((outStart - u) / outStart, 0);
-            return `position: absolute; top: 0; left: 0; opacity: ${v}; ${out ? `--drop-shadow-opacity: ${25 * o}%;` : ''}`;
+        duration: duration + overlap,
+        delay,
+        css: (t: number) => {
+            const t1 = Math.min(t / overlapEnd, 1);
+            const t2 = Math.max((t - overlapEnd) / (1 - overlapEnd), 0);
+            return `position: absolute; top: 0; left: 0; opacity: ${t1}; --drop-shadow-opacity: calc(${shadowOpacity} * ${t2});`;
         },
     };
 }

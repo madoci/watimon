@@ -1,8 +1,10 @@
 <script lang="ts">
     import packImage from './assets/pack.png';
     import classnames from './utils/classnames';
-    import { crossfade, ghost, whirl } from './pack-animations';
+    import { fadeOverlap, whirl } from './pack-animations';
     import PackOpener from './PackOpener.svelte';
+    import { HoverTilt } from 'hover-tilt';
+    import { resetHoverTilt } from './hover-tilt-animations';
 
     const PACK_SIZE_RATIO = 400 / 731;
 
@@ -26,20 +28,43 @@
 >
     {#if !isOpening}
         <button
-            out:crossfade={{ out: true }}
+            out:fadeOverlap={{ duration: 300, overlap: 100, delay: 500 }}
             class="h-full w-full [--drop-shadow-opacity:25%]"
             onclick={() => (isOpening = true)}
         >
-            <img
-                alt="Card pack"
-                src={packImage}
-                class="h-full w-full drop-shadow-2xl/(--drop-shadow-opacity)"
-                draggable="false"
-            />
+            <div out:resetHoverTilt={{ duration: 500 }}>
+                <HoverTilt
+                    tiltFactor={0.75}
+                    scaleFactor={1.1}
+                    glareIntensity={1}
+                    glareMask="url({packImage})"
+                    // Shadow prop uses box-shadow which don't work well with transparent images.
+                    // The pack shadow uses drop-shadow by using some of hover-tilt CSS variables.
+                    class="hover-tilt-drop-shadow"
+                    shadowBlur={24}
+                >
+                    <img alt="Card pack" src={packImage} class="h-full w-full" draggable="false" />
+                </HoverTilt>
+            </div>
         </button>
     {:else}
-        <div in:crossfade class="h-full w-full">
+        <div in:fadeOverlap={{ duration: 0, overlap: 300, delay: 500 }} class="h-full w-full">
             <PackOpener {onopen} />
         </div>
     {/if}
 </div>
+
+<style>
+    :global(.hover-tilt-drop-shadow) {
+        --shadow-blur: calc(var(--hover-tilt-shadow-blur, 12) * 1px);
+        filter: drop-shadow(
+            calc(var(--shadow-x) * var(--shadow-blur))
+                calc(var(--shadow-y) * var(--shadow-blur) / 2 + var(--shadow-blur) / 4)
+                calc(var(--shadow-blur) / 2)
+                var(
+                    --tw-drop-shadow-color,
+                    oklab(from rgb(0 0 0 / 0.15) l a b / var(--drop-shadow-opacity))
+                )
+        );
+    }
+</style>

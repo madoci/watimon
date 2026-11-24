@@ -1,8 +1,10 @@
 <script lang="ts">
-    import cardBackImage from './assets/card-back.png';
+    import { HoverTilt } from 'hover-tilt';
+    import cardBackImage from './assets/card-back_scaled.png';
     import type { CardInfo } from './cards';
 
     const CARD_SIZE_RATIO = 1024 / 1418;
+    const CARD_ROUNDED_CLASS = 'rounded-[20px]';
 
     interface CardImageProps {
         card: CardInfo;
@@ -26,22 +28,38 @@
             : ''}"
     >
         {#await import(/* @vite-ignore */ `./assets/cards-front/card-${1}.png`) then { default: cardFrontImage }}
+            <HoverTilt
+                class="absolute transition backface-hidden {CARD_ROUNDED_CLASS}"
+                shadow
+                shadowBlur={50}
+                tiltFactor={0.75}
+                scaleFactor={1.1}
+            >
+                <img
+                    alt="Card front"
+                    src={cardFrontImage}
+                    class="h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {!props.back
+                        ? 'shadow-xl/(--card-shadow-opacity)'
+                        : ''}"
+                    draggable="false"
+                />
+            </HoverTilt>
+        {/await}
+        <HoverTilt
+            class="absolute rotate-y-180 transition backface-hidden {CARD_ROUNDED_CLASS}"
+            shadow
+            shadowBlur={50}
+            tiltFactor={0.75}
+            scaleFactor={1.1}
+        >
             <img
-                alt="Card front"
-                src={cardFrontImage}
-                class="absolute h-full w-full transition backface-hidden {props.back
-                    ? ''
-                    : 'drop-shadow-xl/(--card-shadow-opacity)'}"
+                alt="Card back"
+                src={cardBackImage}
+                class="h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {props.back
+                    ? 'shadow-xl/(--card-shadow-opacity)'
+                    : ''}"
                 draggable="false"
             />
-        {/await}
-        <img
-            alt="Card back"
-            src={cardBackImage}
-            class="absolute h-full w-full rotate-y-180 transition backface-hidden {props.back
-                ? 'drop-shadow-xl/(--card-shadow-opacity)'
-                : ''}"
-            draggable="false"
-        />
+        </HoverTilt>
     </div>
 </div>

@@ -32,7 +32,7 @@
         {#if !isPackOpened}
             <div
                 // Keep pack visible during out transition
-                out:ghost|global={{ duration: 1000 }}
+                out:ghost={{ duration: 1000 }}
                 class="absolute left-1/2 z-5 flex h-full w-[110%] -translate-x-1/2"
             >
                 <PackSelector onopen={handleOpen} />
