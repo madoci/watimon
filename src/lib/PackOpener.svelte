@@ -24,17 +24,20 @@
         out:thrown|global={{ direction: openingDirection < 0 ? 'left' : 'right' }}
         alt="Card pack top"
         src={packImageTop}
-        class="w-full transform-3d"
+        class="w-full drop-shadow-2xl/25 transform-3d"
         draggable="false"
     />
-    <div out:fade|global={{ duration: 200 }} class="h-0 w-full">
-        <PackSlicer onopen={handleOpen} />
+
+    <div class="relative">
+        <img
+            out:slideDown|global
+            alt="Card pack bottom"
+            src={packImageBottom}
+            class="w-full drop-shadow-2xl/25"
+            draggable="false"
+        />
+        <div out:fade|global={{ duration: 200 }} class="absolute top-0 left-0 h-0 w-full">
+            <PackSlicer onopen={handleOpen} />
+        </div>
     </div>
-    <img
-        out:slideDown|global
-        alt="Card pack bottom"
-        src={packImageBottom}
-        class="w-full"
-        draggable="false"
-    />
 </div>

@@ -30,6 +30,10 @@
     function safeCardInTransition(node: HTMLElement, params: CardTransitionParameters) {
         return cardInTransition?.(node, params) ?? {};
     }
+
+    function easeShadowOpacity(indexDelta: number) {
+        return 1 - (Math.pow(indexDelta, 2) / 20 + indexDelta / 8);
+    }
 </script>
 
 <div class="relative h-full w-full select-none">
@@ -43,6 +47,7 @@
                 class="w-full"
                 back={index < currentIndex}
                 swiped={index > currentIndex}
+                shadowOpacity={easeShadowOpacity(currentIndex - index)}
                 onswipe={() => onswipe?.(reversedCards[currentIndex - 1])}
             />
         </div>

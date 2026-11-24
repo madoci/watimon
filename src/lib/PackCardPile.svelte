@@ -24,7 +24,7 @@
     }
 </script>
 
-<div class="h-full w-90/100">
+<div class="h-full w-full">
     <CardPile
         {cards}
         currentCard={currentCard === 'init' ? cards[0] : currentCard}

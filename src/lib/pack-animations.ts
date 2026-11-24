@@ -24,13 +24,19 @@ export function whirl(node: HTMLElement) {
     };
 }
 
-export function crossfade(node: HTMLElement, params?: { delayed?: boolean }) {
+export function crossfade(node: HTMLElement, params?: { out?: boolean }) {
     const duration = 500;
+    const overlap = 100;
+    const out = !!params?.out;
+    const outStart = duration / (duration + overlap);
 
     return {
-        duration: params?.delayed ? 100 : duration,
-        delay: params?.delayed ? duration : 0,
-        css: (t: number) => `position: absolute; top: 0; left: 0; opacity: ${t};`,
+        duration: out ? duration + overlap : duration,
+        css: (t: number, u: number) => {
+            const v = !out ? t : u < outStart ? 1 : 1 - (u - outStart) / (1 - outStart);
+            const o = Math.max((outStart - u) / outStart, 0);
+            return `position: absolute; top: 0; left: 0; opacity: ${v}; ${out ? `--drop-shadow-opacity: ${25 * o}%;` : ''}`;
+        },
     };
 }
 

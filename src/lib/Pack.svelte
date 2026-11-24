@@ -27,18 +27,20 @@
     }
 </script>
 
-<div class="relative h-full w-85/100 perspective-distant">
-    {#if !isPackOpened}
-        <div
-            // Keep pack visible during out transition
-            out:ghost|global={{ duration: 1000 }}
-            class="z-5 flex h-full w-full"
-        >
-            <PackSelector onopen={handleOpen} />
-        </div>
-    {:else}
-        <div class="flex h-full w-full justify-center">
-            <PackCardPile {cards} {onemptied} />
-        </div>
-    {/if}
+<div class="relative flex h-full w-full justify-center perspective-distant">
+    <div class="relative h-full w-[372px]">
+        {#if !isPackOpened}
+            <div
+                // Keep pack visible during out transition
+                out:ghost|global={{ duration: 1000 }}
+                class="absolute left-1/2 z-5 flex h-full w-[110%] -translate-x-1/2"
+            >
+                <PackSelector onopen={handleOpen} />
+            </div>
+        {:else}
+            <div class="flex h-full w-full justify-center">
+                <PackCardPile {cards} {onemptied} />
+            </div>
+        {/if}
+    </div>
 </div>
