@@ -1,4 +1,4 @@
-import { sinusoidal } from './utils/animations';
+import { sinusoidal } from './utils';
 
 export function whirl(node: HTMLElement) {
     const maxScale = 1.2;

@@ -2,7 +2,7 @@
     import type { ComponentProps } from 'svelte';
     import CardPile from './CardPile.svelte';
     import type { CardInfo } from './cards';
-    import { slideCardUp } from './pack-animations';
+    import { slideCardUp } from './animations/pack-animations';
 
     interface PackCardPileProps {
         cards: ComponentProps<typeof CardPile>['cards'];

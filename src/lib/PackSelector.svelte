@@ -1,10 +1,10 @@
 <script lang="ts">
     import packImage from './assets/pack.png';
     import classnames from './utils/classnames';
-    import { fadeOverlap, whirl } from './pack-animations';
+    import { fadeOverlap, whirl } from './animations/pack-animations';
     import PackOpener from './PackOpener.svelte';
     import { HoverTilt } from 'hover-tilt';
-    import { resetHoverTilt } from './hover-tilt-animations';
+    import { resetHoverTilt } from './animations/hover-tilt-animations';
 
     const PACK_SIZE_RATIO = 400 / 731;
 

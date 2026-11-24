@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ghost } from './pack-animations';
+    import { ghost } from './animations/pack-animations';
     import { openPack } from './packs';
     import type { CardInfo } from './cards';
     import PackCardPile from './PackCardPile.svelte';
