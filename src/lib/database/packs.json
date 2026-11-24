@@ -1,0 +1,13 @@
+{
+    "forgottenCurse": {
+        "name": "Malédiction oubliée",
+        "distribution": [
+            { "common": 1 },
+            { "common": 1 },
+            { "common": 1 },
+            { "common": 1 },
+            { "common": 0.9, "rare": 0.1 },
+            { "rare": 0.9, "mythic": 0.1 }
+        ]
+    }
+}

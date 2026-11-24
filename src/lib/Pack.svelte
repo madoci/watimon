@@ -1,7 +1,7 @@
 <script lang="ts">
     import { ghost } from './animations/pack-animations';
-    import { openPack } from './packs';
-    import type { CardInfo } from './cards';
+    import { openPack } from './database/packs';
+    import { PACK, type CardInfo } from './database/types';
     import PackCardPile from './PackCardPile.svelte';
     import PackSelector from './PackSelector.svelte';
 
@@ -18,7 +18,8 @@
         if (!isPackOpened) {
             isPackOpened = true;
             try {
-                cards = openPack();
+                // For now, there is only one pack
+                cards = openPack(PACK.forgottenCurse);
             } catch {
                 // If an error occurs while attempting to open a pack, end opening
                 onemptied?.();

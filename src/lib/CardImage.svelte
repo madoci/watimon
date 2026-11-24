@@ -1,7 +1,7 @@
 <script lang="ts">
     import { HoverTilt } from 'hover-tilt';
     import cardBackImage from './assets/card-back_scaled.png';
-    import type { CardInfo } from './cards';
+    import type { CardInfo } from './database/types';
 
     const CARD_SIZE_RATIO = 1024 / 1418;
     const CARD_ROUNDED_CLASS = 'rounded-[20px]';

@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ComponentProps } from 'svelte';
     import CardPile from './CardPile.svelte';
-    import type { CardInfo } from './cards';
+    import type { CardInfo } from './database/types';
     import { slideCardUp } from './animations/pack-animations';
 
     interface PackCardPileProps {

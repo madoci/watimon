@@ -1,23 +1,21 @@
-import { getCards, RARITY, type CardInfo, type Rarity } from './cards';
+import { getCards } from './cards';
+import packs from './packs.json';
 import {
     addPackToCollection,
     getCollection,
     getLastPack,
     getLastPackTimestamp,
-} from './storage-data';
-
-type CardDistribution = { [K in Rarity]?: number };
+} from '../storage-data';
+import { RARITY, type CardInfo, type PackInfo, type PackKey, type Rarity } from './types';
+import { validatePacks } from './validations';
 
 //const PACK_OPENING_DELAY = 24 * 60 * 60;
 const PACK_OPENING_DELAY = 60;
 
-const PACK_CARD_DISTRIBUTION: Record<'base', CardDistribution[]> = {
-    base: [
-        { [RARITY.COMMON]: 1 },
-        { [RARITY.COMMON]: 1, [RARITY.RARE]: 0.1 },
-        { [RARITY.RARE]: 1, [RARITY.MYTHIC]: 0.1 },
-    ],
-};
+const PACKS = packs as Record<PackKey, PackInfo>;
+
+// Validate types of the pack database
+validatePacks(PACKS);
 
 export function getRemainingTime(timestamp: number) {
     const canOpen = canOpenPack();
@@ -36,7 +34,7 @@ export function canOpenPack() {
     return Math.floor(timeSinceLastPack / PACK_OPENING_DELAY);
 }
 
-export function openPack(): CardInfo[] {
+export function openPack(packKey: PackKey): CardInfo[] {
     const cards = getCards();
 
     if (!canOpenPack()) {
@@ -62,7 +60,7 @@ export function openPack(): CardInfo[] {
     }, {});
 
     const packCards: CardInfo[] = [];
-    for (const cardDistribution of PACK_CARD_DISTRIBUTION.base) {
+    for (const cardDistribution of PACKS[packKey].distribution) {
         // Calculate cumulative distribution
         const cumulativeDistribution: [Rarity, number][] = [];
         let sum = 0;
@@ -78,7 +76,7 @@ export function openPack(): CardInfo[] {
         // Pick a rarity based on probability
         const random = Math.random() * sum;
         const pickedRarity =
-            cumulativeDistribution.find(([_, p]) => random < p)?.[0] ?? RARITY.COMMON;
+            cumulativeDistribution.find(([_, p]) => random < p)?.[0] ?? RARITY.common;
 
         // Pick a card in the selected pool
         const poolIndex = Math.floor(Math.random() * (pools[pickedRarity]?.length ?? 0));

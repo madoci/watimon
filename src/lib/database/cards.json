@@ -1,0 +1,99 @@
+{
+    "library": [
+        {
+            "id": 1,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 2,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 3,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 4,
+            "name": "",
+            "rarity": "rare"
+        },
+        {
+            "id": 5,
+            "name": "",
+            "rarity": "rare"
+        },
+        {
+            "id": 6,
+            "name": "",
+            "rarity": "mythic"
+        },
+        {
+            "id": 7,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 8,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 9,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 10,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 11,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 12,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 13,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 14,
+            "name": "",
+            "rarity": "rare"
+        },
+        {
+            "id": 15,
+            "name": "",
+            "rarity": "rare"
+        },
+        {
+            "id": 16,
+            "name": "",
+            "rarity": "mythic"
+        },
+        {
+            "id": 17,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 18,
+            "name": "",
+            "rarity": "common"
+        },
+        {
+            "id": 19,
+            "name": "",
+            "rarity": "common"
+        }
+    ]
+}

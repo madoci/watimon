@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { getRemainingTime } from './packs';
+    import { getRemainingTime } from './database/packs';
     import { getTimeTick } from './time-tick.svelte';
 
     interface OpenPackButtonProps {
