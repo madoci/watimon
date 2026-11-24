@@ -29,7 +29,7 @@
 </script>
 
 <div class="relative flex h-full w-full justify-center perspective-distant">
-    <div class="relative h-full w-[372px]">
+    <div class="relative h-full w-[279px] sm:w-[372px]">
         {#if !isPackOpened}
             <div
                 // Keep pack visible during out transition
