@@ -1,0 +1,1 @@
+import{A as e,O as t}from"../chunks/DDgLamww.js";var n=e(`<div class="h-full w-full bg-radial-[circle_at_50%_33%] from-gray-200 to-blue-300">Gallerie</div>`);function r(e){var r=n();t(e,r)}export{r as component};
