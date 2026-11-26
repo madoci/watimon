@@ -6,6 +6,7 @@ function updateHoverTiltStyle(
     const hoverTilts = node.getElementsByClassName(selector);
     for (const element of hoverTilts) {
         const hoverTilt = element as HTMLElement;
+        // Ensure this is indeed a HTMLElement
         if (hoverTilt.style) {
             update(hoverTilt);
         }
@@ -28,6 +29,29 @@ export function resetHoverTiltTransform(node: HTMLElement, params?: { duration?:
             '--hover-tilt-custom-glare-transition',
             `opacity ${duration}ms`,
         );
+    });
+
+    // No CSS style on the element itself
+    return {
+        duration: duration,
+        css: () => '',
+    };
+}
+
+export function blockHoverTiltTransform(node: HTMLElement, params?: { duration?: number }) {
+    const duration = params?.duration ?? 300;
+
+    // Reset HoverTilt's transform with smooth transition
+    updateHoverTiltStyle(node, 'hover-tilt-container', (hoverTilt) => {
+        const pointerEvents = hoverTilt.style.getPropertyValue('pointer-events');
+        hoverTilt.style.setProperty('pointer-events', 'none');
+        setTimeout(() => {
+            if (pointerEvents) {
+                hoverTilt.style.setProperty('pointer-events', pointerEvents);
+            } else {
+                hoverTilt.style.removeProperty('pointer-events');
+            }
+        }, duration);
     });
 
     // No CSS style on the element itself

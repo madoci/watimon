@@ -6,10 +6,14 @@
     import { HoverTilt } from 'hover-tilt';
     import {
         addHoverTiltGlareClass,
+        blockHoverTiltTransform,
         resetHoverTiltTransform,
     } from './animations/hover-tilt-animations';
 
     const PACK_SIZE_RATIO = 400 / 731;
+
+    const PACK_OPENER_TRANSITION_DELAY = 300;
+    const PACK_OPENER_TRANSITION_DURATION = 500;
 
     interface PackSelectorProps {
         onopen?: () => void;
@@ -18,6 +22,24 @@
     let { onopen }: PackSelectorProps = $props();
 
     let isOpening = $state(false);
+
+    function transitionPackOut(node: HTMLElement) {
+        resetHoverTiltTransform(node, { duration: PACK_OPENER_TRANSITION_DELAY });
+        return fadeOverlap(node, {
+            duration: PACK_OPENER_TRANSITION_DURATION,
+            overlap: 100,
+            delay: PACK_OPENER_TRANSITION_DELAY,
+        });
+    }
+
+    function transitionPackOpenerIn(node: HTMLElement) {
+        blockHoverTiltTransform(node, { duration: 850 });
+        return fadeOverlap(node, {
+            duration: 0,
+            overlap: PACK_OPENER_TRANSITION_DURATION,
+            delay: PACK_OPENER_TRANSITION_DELAY,
+        });
+    }
 
     function transitionPackOpenerOut(node: HTMLElement) {
         addHoverTiltGlareClass(node, { class: 'hover-tilt-cropped-pack' });
@@ -37,33 +59,26 @@
 >
     {#if !isOpening}
         <button
-            out:fadeOverlap={{ duration: 300, overlap: 100, delay: 500 }}
+            out:transitionPackOut
             class="h-full w-full [--drop-shadow-opacity:25%]"
             onclick={() => (isOpening = true)}
         >
-            <div out:resetHoverTiltTransform={{ duration: 500 }}>
-                <HoverTilt
-                    tiltFactor={0.75}
-                    scaleFactor={1.1}
-                    springOptions={{ stiffness: 0.05, damping: 0.2 }}
-                    tiltSpringOptions={{ stiffness: 0.05, damping: 0.1 }}
-                    glareMask="url({packImage})"
-                    //glareMaskMode="alpha"
-                    // Shadow prop uses box-shadow which don't work well with transparent images.
-                    // The pack shadow uses drop-shadow by using some of hover-tilt CSS variables.
-                    class="hover-tilt-luminance-beam hover-tilt-drop-shadow"
-                    shadowBlur={24}
-                >
-                    <img alt="Card pack" src={packImage} class="h-full w-full" draggable="false" />
-                </HoverTilt>
-            </div>
+            <HoverTilt
+                tiltFactor={0.75}
+                scaleFactor={1.1}
+                springOptions={{ stiffness: 0.05, damping: 0.2 }}
+                tiltSpringOptions={{ stiffness: 0.05, damping: 0.1 }}
+                glareMask="url({packImage})"
+                // Shadow prop uses box-shadow which don't work well with transparent images.
+                // The pack shadow uses drop-shadow by using some of hover-tilt CSS variables.
+                class="hover-tilt-overlayed hover-tilt-luminance-beam hover-tilt-drop-shadow"
+                shadowBlur={24}
+            >
+                <img alt="Card pack" src={packImage} class="h-full w-full" draggable="false" />
+            </HoverTilt>
         </button>
     {:else}
-        <div
-            in:fadeOverlap={{ duration: 0, overlap: 300, delay: 500 }}
-            out:transitionPackOpenerOut|global
-            class="h-full w-full"
-        >
+        <div in:transitionPackOpenerIn out:transitionPackOpenerOut|global class="h-full w-full">
             <HoverTilt
                 tiltFactor={0.1}
                 springOptions={{ stiffness: 0.05, damping: 0.2 }}
