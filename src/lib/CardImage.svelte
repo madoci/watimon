@@ -15,6 +15,10 @@
 
     let props: CardImageProps = $props();
 
+    let cardFrontImage = $derived(
+        new URL(`./assets/cards-front/tmp/card-${props.card.id}.webp`, import.meta.url).href,
+    );
+
     let shadowOpacity = $derived(Math.max(Math.min(props.shadowOpacity ?? 1, 1), 0) * 25);
 </script>
 
@@ -27,24 +31,22 @@
             ? 'rotate-y-180'
             : ''}"
     >
-        {#await import(/* @vite-ignore */ `./assets/cards-front/card-${1}.png`) then { default: cardFrontImage }}
-            <HoverTilt
-                class="absolute transition backface-hidden {CARD_ROUNDED_CLASS}"
-                shadow
-                shadowBlur={50}
-                tiltFactor={0.75}
-                scaleFactor={1.1}
-            >
-                <img
-                    alt="Card front"
-                    src={cardFrontImage}
-                    class="h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {!props.back
-                        ? 'shadow-xl/(--card-shadow-opacity)'
-                        : ''}"
-                    draggable="false"
-                />
-            </HoverTilt>
-        {/await}
+        <HoverTilt
+            class="absolute transition backface-hidden {CARD_ROUNDED_CLASS}"
+            shadow
+            shadowBlur={50}
+            tiltFactor={0.75}
+            scaleFactor={1.1}
+        >
+            <img
+                alt="Card front"
+                src={cardFrontImage}
+                class="h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {!props.back
+                    ? 'shadow-xl/(--card-shadow-opacity)'
+                    : ''}"
+                draggable="false"
+            />
+        </HoverTilt>
         <HoverTilt
             class="absolute rotate-y-180 transition backface-hidden {CARD_ROUNDED_CLASS}"
             shadow
