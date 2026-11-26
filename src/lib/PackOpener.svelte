@@ -1,6 +1,6 @@
 <script lang="ts">
-    import packImageTop from './assets/pack-top.png';
-    import packImageBottom from './assets/pack-bottom.png';
+    import packImageTop from './assets/local/pack-top.png';
+    import packImageBottom from './assets/local/pack-bottom.png';
     import { slideDown, thrown } from './animations/pack-animations';
     import { fade } from 'svelte/transition';
     import PackSlicer from './PackSlicer.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import packImage from './assets/pack.png';
+    import packImage from './assets/local/pack.png';
     import classnames from './utils/classnames';
     import { fadeOverlap, slideDown, whirl } from './animations/pack-animations';
     import PackOpener from './PackOpener.svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
     import './layout.css';
-    import favicon from '#lib/assets/favicon.svg';
+    import favicon from '#lib/assets/local/favicon.svg';
     import type { LayoutProps } from './$types';
     import { onMount } from 'svelte';
     import { readDataFromStorage } from '#lib/storage-data.ts';

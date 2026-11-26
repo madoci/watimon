@@ -1,6 +1,6 @@
 <script lang="ts">
     import { HoverTilt } from 'hover-tilt';
-    import cardBackImage from './assets/card-back_scaled.png';
+    import cardBackImage from './assets/local/card-back_scaled.png';
     import type { CardInfo } from './database/types';
 
     const CARD_SIZE_RATIO = 1024 / 1418;
@@ -16,7 +16,7 @@
     let props: CardImageProps = $props();
 
     let cardFrontImage = $derived(
-        new URL(`./assets/cards-front/tmp/card-${props.card.id}.webp`, import.meta.url).href,
+        new URL(`./assets/local/cards-front/tmp/card-${props.card.id}.webp`, import.meta.url).href,
     );
 
     let shadowOpacity = $derived(Math.max(Math.min(props.shadowOpacity ?? 1, 1), 0) * 25);
