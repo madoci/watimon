@@ -1,3 +1,4 @@
+import { backIn, cubicIn, cubicOut } from 'svelte/easing';
 import { sinusoidal } from './utils';
 
 export function whirl(node: HTMLElement) {
@@ -49,13 +50,12 @@ export function fadeOverlap(
 }
 
 export function slideDown(node: HTMLElement) {
-    const translationDelay = 0.25;
     const opacityDelay = 0.8;
     return {
         duration: 900,
+        easing: cubicIn,
         css: (t: number, u: number) => {
-            const v = (u - translationDelay) / (1 - translationDelay);
-            const translationY = v < 0 ? 0 : sinusoidal(v, 0.25, -1, 1);
+            const translationY = sinusoidal(u, 0.25, -1, 1);
             const opacity =
                 u < opacityDelay
                     ? 1

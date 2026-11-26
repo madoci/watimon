@@ -30,7 +30,6 @@
 
     <div class="relative">
         <img
-            out:slideDown|global
             alt="Card pack bottom"
             src={packImageBottom}
             class="w-full drop-shadow-2xl/25"
