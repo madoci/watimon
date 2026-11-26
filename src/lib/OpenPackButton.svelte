@@ -2,6 +2,10 @@
     import { onMount } from 'svelte';
     import { getRemainingTime } from './database/packs';
     import { getTimeTick } from './time-tick.svelte';
+    import { scale } from 'svelte/transition';
+
+    const SHARED_STYLE =
+        'rounded-full border-4 border-white bg-linear-120 from-blue-400 via-cyan-300 to-blue-400 bg-size-[400%_100%] shadow-md';
 
     interface OpenPackButtonProps {
         renderOpenable: () => string;
@@ -24,14 +28,40 @@
     });
 </script>
 
-{#if isLoaded}
+{#if !isLoaded}
+    <div
+        out:scale
+        class="{SHARED_STYLE} loading-animation absolute top-1/2 left-1/2 w-2/3 -translate-1/2 p-1"
+    ></div>
+{:else}
     <button
-        class="w-full cursor-pointer rounded-full border-4 border-white bg-linear-120 from-blue-400 via-cyan-300 to-blue-400 bg-size-[400%_100%] p-4 text-xl font-bold text-white shadow-md select-none text-shadow-md disabled:cursor-default motion-safe:animate-gradient-pan-loop"
+        in:scale
+        class="{SHARED_STYLE} button-animation w-full cursor-pointer p-4 text-xl font-bold text-white select-none text-shadow-md disabled:cursor-default"
         disabled={value >= 0}
         {onclick}
     >
         {value >= 0 ? renderUnopenable(formatter.format({ seconds: value })) : renderOpenable()}
     </button>
-{:else}
-    <span></span>
 {/if}
+
+<style>
+    .button-animation {
+        animation: gradient-pan 12s ease infinite;
+    }
+
+    .loading-animation {
+        animation: gradient-pan 2s linear infinite;
+    }
+
+    @keyframes gradient-pan {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
