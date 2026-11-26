@@ -9,5 +9,5 @@ for directory in "${HTML_DIRECTORIES[@]}"
 do
     echo "Encrypt HTML files in \"$directory\""
     parent="$(dirname "${directory}")"
-    npx staticrypt "$directory" --short -r -d "$parent" -t "$STATICRYPT_TEMPLATE"
+    npx staticrypt "$directory" -r -d "$parent" -t "$STATICRYPT_TEMPLATE"
 done
