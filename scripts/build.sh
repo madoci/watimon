@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HTML_DIRECTORIES=( "build/" ".svelte-kit/output/prerendered/pages/" )
+HTML_DIRECTORIES=( "docs/" ".svelte-kit/output/prerendered/pages/" )
 STATICRYPT_TEMPLATE="scripts/staticrypt_template.html"
 
 npm run build-raw
