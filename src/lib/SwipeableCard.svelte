@@ -2,7 +2,7 @@
     import type { ComponentProps } from 'svelte';
     import CardImage from './CardImage.svelte';
     import Swiper from './Swiper.svelte';
-    import type { Offset } from './Swiper.svelte';
+    import type { Offset, SwipeEventType } from './Swiper.svelte';
     import classnames from './utils/classnames';
 
     interface SwipeableCardProps extends ComponentProps<typeof CardImage> {
@@ -12,7 +12,8 @@
         onswipe?: () => void;
     }
 
-    const SWIPE_THRESHOLD = 50;
+    const SWIPE_MOUSE_THRESHOLD = 100;
+    const SWIPE_TOUCH_THRESHOLD = 250;
     const COMMON_STYLE = 'translate-x-(--pack-card-translation) rotate-(--pack-card-rotation)';
     const BASE_STYLE = 'transition-transform';
     const HIDDEN_STYLE =
@@ -41,9 +42,9 @@
         offset = x;
     }
 
-    function handleMoveEnd({ x }: Offset) {
+    function handleMoveEnd({ x }: Offset, type: SwipeEventType) {
         offset = 0;
-        if (Math.abs(x) > SWIPE_THRESHOLD) {
+        if (Math.abs(x) > (type === 'touch' ? SWIPE_TOUCH_THRESHOLD : SWIPE_MOUSE_THRESHOLD)) {
             swipe(x < 0 ? -1 : 1);
         }
     }
@@ -73,6 +74,8 @@
     style="--pack-card-translation: {translation}; --pack-card-rotation: {rotation};"
     disabled={disabled || !!resolvedSwipedDirection}
     aria-hidden={!!resolvedSwipedDirection}
+    touchDeadzone={20}
+    touchMinSpeed={{ x: 200, y: Infinity }}
     onmove={handleMove}
     onmoveend={handleMoveEnd}
     onclick={handleClick}
