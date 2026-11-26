@@ -74,7 +74,12 @@
                 class="hover-tilt-overlayed hover-tilt-luminance-beam hover-tilt-drop-shadow"
                 shadowBlur={24}
             >
-                <img alt="Card pack" src={packImage} class="h-full w-full" draggable="false" />
+                <img
+                    alt="Card pack"
+                    src={packImage}
+                    class="pointer-events-none h-full w-full"
+                    draggable="false"
+                />
             </HoverTilt>
         </button>
     {:else}

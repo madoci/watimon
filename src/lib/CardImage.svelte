@@ -41,7 +41,7 @@
             <img
                 alt="Card front"
                 src={cardFrontImage}
-                class="h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {!props.back
+                class="pointer-events-none h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {!props.back
                     ? 'shadow-xl/(--card-shadow-opacity)'
                     : ''}"
                 draggable="false"
@@ -57,7 +57,7 @@
             <img
                 alt="Card back"
                 src={cardBackImage}
-                class="h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {props.back
+                class="pointer-events-none h-full w-full overflow-hidden {CARD_ROUNDED_CLASS} {props.back
                     ? 'shadow-xl/(--card-shadow-opacity)'
                     : ''}"
                 draggable="false"

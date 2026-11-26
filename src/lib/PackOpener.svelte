@@ -1,7 +1,7 @@
 <script lang="ts">
     import packImageTop from './assets/local/pack-top.png';
     import packImageBottom from './assets/local/pack-bottom.png';
-    import { slideDown, thrown } from './animations/pack-animations';
+    import { thrown } from './animations/pack-animations';
     import { fade } from 'svelte/transition';
     import PackSlicer from './PackSlicer.svelte';
 
@@ -24,7 +24,7 @@
         out:thrown|global={{ direction: openingDirection < 0 ? 'left' : 'right' }}
         alt="Card pack top"
         src={packImageTop}
-        class="w-full drop-shadow-2xl/25 transform-3d"
+        class="pointer-events-none w-full drop-shadow-2xl/25 transform-3d"
         draggable="false"
     />
 
@@ -32,7 +32,7 @@
         <img
             alt="Card pack bottom"
             src={packImageBottom}
-            class="w-full drop-shadow-2xl/25"
+            class="pointer-events-none w-full drop-shadow-2xl/25"
             draggable="false"
         />
         <div out:fade|global={{ duration: 200 }} class="absolute top-0 left-0 h-0 w-full">
