@@ -10,6 +10,9 @@
         swiped?: boolean;
         disabled?: boolean;
         onswipe?: () => void;
+        deadzone?: number;
+        speed?: number;
+        threshold?: number;
     }
 
     const SWIPE_MOUSE_THRESHOLD = 100;
@@ -19,7 +22,16 @@
     const HIDDEN_STYLE =
         'translate-y-[5%] opacity-0 [--pack-card-duration:300ms] [--pack-card-opacity-delay:150ms] transition-[transform,translate,rotate,opacity] duration-[var(--pack-card-duration),var(--pack-card-duration),var(--pack-card-duration),calc(var(--pack-card-duration)-var(--pack-card-opacity-delay))] delay-[0ms,0ms,0ms,var(--pack-card-opacity-delay)] ease-linear';
 
-    let { class: classProp, swiped, disabled, onswipe, ...props }: SwipeableCardProps = $props();
+    let {
+        class: classProp,
+        swiped,
+        disabled,
+        onswipe,
+        deadzone,
+        speed,
+        threshold,
+        ...props
+    }: SwipeableCardProps = $props();
 
     let offset = $state(0);
     let swipedDirection = $state(0);
@@ -44,7 +56,10 @@
 
     function handleMoveEnd({ x }: Offset, type: SwipeEventType) {
         offset = 0;
-        if (Math.abs(x) > (type === 'touch' ? SWIPE_TOUCH_THRESHOLD : SWIPE_MOUSE_THRESHOLD)) {
+        if (
+            Math.abs(x) >
+            (type === 'touch' ? (threshold ?? SWIPE_TOUCH_THRESHOLD) : SWIPE_MOUSE_THRESHOLD)
+        ) {
             swipe(x < 0 ? -1 : 1);
         }
     }
@@ -74,8 +89,8 @@
     style="--pack-card-translation: {translation}; --pack-card-rotation: {rotation};"
     disabled={disabled || !!resolvedSwipedDirection}
     aria-hidden={!!resolvedSwipedDirection}
-    touchDeadzone={20}
-    touchMinSpeed={{ x: 200, y: Infinity }}
+    touchDeadzone={deadzone ?? 20}
+    touchMinSpeed={{ x: speed ?? 200, y: Infinity }}
     onmove={handleMove}
     onmoveend={handleMoveEnd}
     onclick={handleClick}

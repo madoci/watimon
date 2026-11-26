@@ -34,6 +34,15 @@
     function easeShadowOpacity(indexDelta: number) {
         return 1 - (Math.pow(indexDelta, 2) / 20 + indexDelta / 8);
     }
+
+    let deadzone = $state('20');
+    let speed = $state('200');
+    let threshold = $state('250');
+
+    function parseInput(value: string) {
+        const num = Number(value);
+        return Number.isNaN(num) ? undefined : num;
+    }
 </script>
 
 <div class="relative h-full w-full select-none">
@@ -49,7 +58,15 @@
                 swiped={index > currentIndex}
                 shadowOpacity={easeShadowOpacity(currentIndex - index)}
                 onswipe={() => onswipe?.(reversedCards[currentIndex - 1])}
+                deadzone={parseInput(deadzone)}
+                speed={parseInput(speed)}
+                threshold={parseInput(threshold)}
             />
         </div>
     {/each}
+    <div class="absolute">
+        <input bind:value={deadzone} />
+        <input bind:value={speed} />
+        <input bind:value={threshold} />
+    </div>
 </div>
